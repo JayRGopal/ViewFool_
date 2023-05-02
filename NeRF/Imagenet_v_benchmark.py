@@ -10,6 +10,7 @@ root_path = os.path.abspath(os.path.dirname(current_directory) + os.path.sep + "
 sys.path.append(root_path)
 import classifier.predict_3 
 from classifier.predict_3 import test_baseline 
+import json
 
 # from classifier import test_baseline
 
@@ -22,7 +23,8 @@ import argparse
 def parse_opt(known=False):
     parser = argparse.ArgumentParser()
     parser.add_argument('--model', type=str, default='', help='initial model')
-
+    parser.add_argument('--savepath', type=str, default='', help='path to save accuracy (json)')
+     
     opt = parser.parse_known_args()[0] if known else parser.parse_args()
     return opt
 
@@ -51,20 +53,13 @@ bb = ['hotdog, hot dog, red hot', 'French loaf', 'cheeseburger', 'lemon', 'butte
 accs = []
 for i in range(0,100):
     # path_1 = "/HOME/scz1972/run/rsw_/NeRFAttack/NeRF/phyattack_real_datta/phyattack_real_datta/" + aa[i] +"/"
-    path_1 = "/HOME/scz1972/run/rsw_/NeRFAttack/NeRF/train_data_all/" + aa[i] +"/train/"
+    path_1 = "/cifs/data/tserre/CLPS_Serre_Lab/projects/prj_video_imagenet/Gopal-ImageNet-V/" + aa[i] +"/"
     label_1 = bb[i]
     
     
-    # models_k = ['inception_resnet']
-    # models = [ 'inc-v3','inception_resnet','densenet','efficientnet','mlp-mixer','deit_base','swin_base','VGG','mobilenet-v2']
     models = []
 
     models.append(opt.model)
-# models = ['resnet50', 'resnet101', 'inc-v3', 'googlenet', 'shufflenet', 'mobilnet', 'resnext', 'vit', 'resnet50-augmix', 'resnet50-deepaug', 'resnet50-deepaug+augmix']
-#     models_2 = ['inc-v4', 'inception_resnet', 'VGG', 'mobilenet-v2', 'squeeze', 'mnasnet', 'deit_base', 'swin_base']
-#     models_3 = ['vit-mae']
-
-    # models_4 = ['resnet50', 'vit']
     mode = 'test_nerf_data_black_attack'
 # mode = 0
     if mode == 'test_nerf_data_black_attack':
@@ -74,5 +69,11 @@ for i in range(0,100):
             # acc = test_baseline (path="/HOME/scz1972/run/rsw_/NeRFAttack/NeRF/nerf_blackbox_data/resnet_AP_lamba0/apple_2/", label='Granny Smith', model=model)
             accs.append(acc)
 print(accs)
+final_acc = sum(accs) / len(accs)
 
+print(f'FINAL ACCURACY: {final_acc}')
+
+SAVING = opt.savepath
+with open(SAVING, 'w') as json_file:
+    json.dump(accs, json_file)
 

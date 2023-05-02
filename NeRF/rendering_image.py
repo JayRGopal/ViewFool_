@@ -88,7 +88,11 @@ def render_image(all_args, is_over=False):
 
 
     imgs, depth_maps, psnrs = [], [], []
-    dir_name = f'results/{args.dataset_name}/{args.scene_name}'
+    
+    insert1 = args.dataset_name 
+    insert2 = args.scene_name 
+    dir_name = "results/" + insert1 + "/" + insert2
+    
     os.makedirs(dir_name, exist_ok=True)
 
     
@@ -101,11 +105,12 @@ def render_image(all_args, is_over=False):
 
 
         typ = 'fine' if 'rgb_fine' in results else 'coarse'
-
-        img_pred = np.clip(results[f'rgb_{typ}'].view(h, w, 3).cpu().numpy(), 0, 1)
+        results_insert = f"rgb_{typ}" 
+        img_pred = np.clip(results[results_insert].view(h, w, 3).cpu().numpy(), 0, 1)
 
         if args.save_depth:
-            depth_pred = results[f'depth_{typ}'].view(h, w).cpu().numpy()
+            depth_insert = f"depth_{typ}" 
+            depth_pred = results[depth_insert].view(h, w).cpu().numpy()
             depth_maps += [depth_pred]
             if args.depth_format == 'pfm':
                 save_pfm(os.path.join(dir_name, f'depth_{i:03d}.pfm'), depth_pred)

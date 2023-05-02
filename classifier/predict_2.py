@@ -29,8 +29,8 @@ def test_baseline(path, label, model, is_mean=False):
     tensor_data = [] # pytorch tensor
 
     for name in images_name:
-        print('name:')
-        print(name)
+        #print('name:')
+        #print(name)
         if is_mean:
             if name == '100.png':
                 img = cv2.imread(images_path + name)
@@ -38,7 +38,7 @@ def test_baseline(path, label, model, is_mean=False):
                 continue
         else:
             img = cv2.imread(images_path + name)
-        print(f"name: {images_path+name}, opencv image shape: {img.shape}") # (h,w,c)
+        #print(f"name: {images_path+name}, opencv image shape: {img.shape}") # (h,w,c)
         images_data.append(img)
         img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
         img_pil = Image.fromarray(img)
@@ -248,7 +248,7 @@ def test_baseline(path, label, model, is_mean=False):
             class_ = []
             for i in range(top_num):
                 class_.append(classes[topclass.cpu().numpy()[0][i]])
-            print("Output class : ", class_)
+            #print("Output class : ", class_)
 
             #true_label = np.zeros((1, 1000))
             #true_label[:, 817] = 1.0
@@ -256,7 +256,7 @@ def test_baseline(path, label, model, is_mean=False):
             #loss_func = torch.nn.CrossEntropyLoss()
 
             #print('loss:', loss_func(prediction, true_label.to(device)))
-            print('score:', np.max(ps.cpu().numpy())/np.sum(ps.cpu().numpy()))
+            #print('score:', np.max(ps.cpu().numpy())/np.sum(ps.cpu().numpy()))
 
             for i in range(len(topclass.cpu().numpy()[0])):
                 if classes[topclass.cpu().numpy()[0][i]] == label:

@@ -64,8 +64,8 @@ def test_baseline(path, label, model, is_mean=False):
     tensor_data = [] # pytorch tensor
 
     for name in images_name:
-        print('name:')
-        print(name)
+        #print('name:')
+        #print(name)
         if is_mean:
             if name == '100.png':
                 img = cv2.imread(images_path + name)
@@ -73,7 +73,7 @@ def test_baseline(path, label, model, is_mean=False):
                 continue
         else:
             img = cv2.imread(images_path + name)
-        print(f"name: {images_path+name}, opencv image shape: {img.shape}") # (h,w,c)
+        #print(f"name: {images_path+name}, opencv image shape: {img.shape}") # (h,w,c)
         images_data.append(img)
         img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
         img_pil = Image.fromarray(img)

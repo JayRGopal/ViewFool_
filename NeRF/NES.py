@@ -19,6 +19,7 @@ root_path = os.path.abspath(os.path.dirname(current_directory) + os.path.sep + "
 sys.path.append(root_path)
 import classifier.predict 
 from classifier.predict import test_baseline 
+import logging
 
 
 def compute_ranks(x):
@@ -210,7 +211,7 @@ class PEPG:
     inside = 1-torch.pow(torch.tanh(mu+sigma*r), 2)+1e-8
     neg_logp = torch.log(sigma+1e-8) + 1/2*torch.pow(r, 2) + torch.log(inside)
     entropy = torch.sum(neg_logp, 0)/self.popsize
-    print('entropy:\n', entropy)
+    logging.info(f'entropy:\n {entropy}')
     Entropy = torch.sum(entropy)
 
   
@@ -220,7 +221,7 @@ class PEPG:
 
     mu.grad.data.zero_()
     sigma.grad.data.zero_()
-    print("Entropy:\n", Entropy)
+    logging.info(f"Entropy:\n {Entropy}")
     self.entropy = Entropy
 
     return mu_entropy_grad.cpu().detach().numpy(), sigma_entropy_grad.cpu().detach().numpy()
@@ -291,8 +292,8 @@ class PEPG:
       change_mu = np.dot(rT, epsilon) + self.mu_lamba*mu_entropy_grad
       #print('rt:\n', rT)
       #print('epsilon', epsilon)
-      print('mu-loss1:', np.dot(rT, epsilon))
-      print('mu-loss2:', self.mu_lamba*mu_entropy_grad)
+      logging.info(f'mu-loss1: {np.dot(rT, epsilon)}')
+      logging.info(f'mu-loss2: {self.mu_lamba*mu_entropy_grad}')
 
       self.optimizer.stepsize = self.learning_rate
       update_ratio = self.optimizer.update(-change_mu)  # adam, rmsprop, momentum, etc.
@@ -316,8 +317,8 @@ class PEPG:
       # for stability, don't let sigma move more than 10% of orig value
       change_sigma = self.sigma_alpha * (delta_sigma + self.sigma_lamba*sigma_entropy_grad)
 
-      print('sigma-loss1:', delta_sigma)
-      print('sigma-loss2:', self.sigma_lamba*sigma_entropy_grad)
+      logging.info(f'sigma-loss1: {delta_sigma}')
+      logging.info(f'sigma-loss2: {self.sigma_lamba*sigma_entropy_grad}')
 
       change_sigma = np.minimum(change_sigma, self.sigma_max_change * self.sigma)
       change_sigma = np.maximum(change_sigma, - self.sigma_max_change * self.sigma)
@@ -373,7 +374,7 @@ def NES_search():
                   sigma_lambda=args.sigma_lamba
                   )
 
-    logging = {'mu': [], 'sigma': [], 'fitness': [], 'entropy':[]}
+    stats_logging = {'mu': [], 'sigma': [], 'fitness': [], 'entropy':[]}
     history = []
     fitness_origin = []
     history_best_solution = []
@@ -401,7 +402,7 @@ def NES_search():
       with joblib.Parallel(n_jobs=N_JOBS) as parallel:
         #for i in tqdm(range(solver.popsize)):
           #fitness_list[i] = comput_fitness(solutions[i])
-
+        logging.info('test')
         fitness_list = parallel(joblib.delayed(comput_fitness)(solutions[i], solver.sigma) for i in tqdm(range(solver.popsize)))
 
       solver.tell(fitness_list, mu_entropy_grad, sigma_entropy_grad)
@@ -415,15 +416,15 @@ def NES_search():
       max_idx = np.argmax(fitness_list)
       history_best_solution.append(solutions[max_idx])
       if (j + 1) % 1 == 0:
-        print("fitness at iteration\n", (j + 1), max(fitness_origin))
-        print("average fitness at iteration\n", (j + 1), average_fitness)
-        print("sigma at iteration\n", (j + 1), result[3])
-        print("mu at iteration\n", (j + 1), result[0])
+        logging.info(f"fitness at iteration\n {(j + 1)} {max(fitness_origin)}")
+        logging.info(f"average fitness at iteration\n {(j + 1)} {average_fitness}")
+        logging.info(f"sigma at iteration\n {(j + 1)} {result[3]}")
+        logging.info(f"mu at iteration\n {(j + 1)} {result[0]}")
 
-        logging['fitness'].append(result[1])
-        logging['sigma'].append(result[3])
-        logging['mu'].append(result[0])
-        logging['entropy'].append(solver.entropy)
+        stats_logging['fitness'].append(result[1])
+        stats_logging['sigma'].append(result[3])
+        stats_logging['mu'].append(result[0])
+        stats_logging['entropy'].append(solver.entropy)
       # print('fitness_list', fitness_list)
 
       #if average_fitness > -0.25:
@@ -466,7 +467,7 @@ def NES_search():
     mu = random.mean(axis=0)
     var = (random - mu).T @ (random - mu) / random.shape[0]
     var = np.sqrt(np.diagonal(var))  # this is slightly suboptimal, but instructive
-    print('final sigma after tanh(var)', var)
+    logging.info(f'final sigma after tanh(var) {var}')
 
     mu = np.zeros([6])
     mu[0] = 30 * np.tanh(result[0][0])
@@ -476,29 +477,29 @@ def NES_search():
     mu[4] = 0.5 * np.tanh(result[0][4])
     mu[5] = 0.5 * np.tanh(result[0][5])
 
-    print('final mu after tanh(mean)', mu)
+    logging.info(f'final mu after tanh(mean) {mu}')
 
-    np.save('logging_test4.npy', logging)
+    np.save('~/Neurips2023/ViewFool_/Jay_output/logging_test4.npy', logging)
     
     "Render 100 images of this distribution"
-    print('begin render 100 images in current adv-distribution')
-    print('--------------------------------------------------')
+    logging.info(f'begin render 100 images in current adv-distribution')
+    logging.info(f'--------------------------------------------------')
     render_image(random, is_over=True)
 
     "Verify Accuracy"
-    print('begin test the accuracy')
-    print('--------------------------------------------------')
-    path = '/HOME/scz1972/run/rsw_/NeRFAttack/results/blender_for_attack/' + args.scene_name + '/'
+    logging.info('begin test the accuracy')
+    logging.info('--------------------------------------------------')
+    path = '~/Neurips2023/ViewFool_/Jay_output/' + args.scene_name + '/'
     test_baseline(path=path, label=args.label_name, model='resnet')
 
-    print('entropy')
-    print('--------------------------------------------------')
-    print(solver.entropy)
+    logging.info('entropy')
+    logging.info('--------------------------------------------------')
+    logging.info(f"{solver.entropy}")
 
 
-    print('no.100 the mean img')
-    print('--------------------------------------------------')
-    path = '/HOME/scz1972/run/rsw_/NeRFAttack/results/blender_for_attack/' + args.scene_name + '/'
+    logging.info('no.100 the mean img')
+    logging.info('--------------------------------------------------')
+    path = '~/Neurips2023/ViewFool_/Jay_output/' + args.scene_name + '/'
     test_baseline(path=path, label=args.label_name, model='resnet', is_mean=True)
 
 
@@ -532,7 +533,7 @@ def NES_search():
                   sigma_lambda=args.sigma_lamba
                   )
 
-    logging = {'mu': [], 'sigma': [], 'fitness': [], 'entropy':[]}
+    stats_logging = {'mu': [], 'sigma': [], 'fitness': [], 'entropy':[]}
     history = []
     fitness_origin = []
     history_best_solution = []
@@ -576,15 +577,15 @@ def NES_search():
       max_idx = np.argmax(fitness_list)
       history_best_solution.append(solutions[max_idx])
       if (j + 1) % 1 == 0:
-        print("fitness at iteration\n", (j + 1), max(fitness_origin))
-        print("average fitness at iteration\n", (j + 1), average_fitness)
-        print("sigma at iteration\n", (j + 1), result[3])
-        print("mu at iteration\n", (j + 1), result[0])
+        logging.info(f"fitness at iteration\n {(j + 1)} {max(fitness_origin)}")
+        logging.info(f"average fitness at iteration\n {(j + 1)} {average_fitness}")
+        logging.info(f"sigma at iteration\n {(j + 1)} {result[3]}")
+        logging.info(f"mu at iteration\n {(j + 1)} {result[0]}")
 
-        logging['fitness'].append(result[1])
-        logging['sigma'].append(result[3])
-        logging['mu'].append(result[0])
-        logging['entropy'].append(solver.entropy)
+        stats_logging['fitness'].append(result[1])
+        stats_logging['sigma'].append(result[3])
+        stats_logging['mu'].append(result[0])
+        stats_logging['entropy'].append(solver.entropy)
       # print('fitness_list', fitness_list)
 
       #if average_fitness > max_stop_fitness:
@@ -619,7 +620,7 @@ def NES_search():
     mu = random.mean(axis=0)
     var = (random - mu).T @ (random - mu) / random.shape[0]
     var = np.sqrt(np.diagonal(var))  # this is slightly suboptimal, but instructive
-    print('final sigma after tanh(var)', var)
+    logging.info(f'final sigma after tanh(var) {var}')
 
     mu = np.zeros([6])
     mu[0] = 30 * np.tanh(result[0][0])
@@ -629,22 +630,22 @@ def NES_search():
     mu[4] = 0.0
     mu[5] = 0.0
 
-    print('final mu after tanh(mean)', mu)
+    logging.info(f'final mu after tanh(mean) {mu}')
 
     "Render 100 images of this distribution"
-    print('begin render 100 images in current adv-distribution')
-    print('--------------------------------------------------')
+    logging.info('begin render 100 images in current adv-distribution')
+    logging.info('--------------------------------------------------')
     render_image(random, is_over=True)
 
     "Verify Accuracy"
-    print('begin test the accuracy')
-    print('--------------------------------------------------')
-    path = '/HOME/scz1972/run/rsw_/NeRFAttack/run_NES_A/results/blender_for_attack/' + args.scene_name + '/'
+    logging.info('begin test the accuracy')
+    logging.info('--------------------------------------------------')
+    path = '~/Neurips2023/ViewFool_/Jay_output/' + args.scene_name + '/'
     test_baseline(path=path, label=args.label_name, model='vit')
 
-    print('no.100 the mean img')
-    print('--------------------------------------------------')
-    path = '/HOME/scz1972/run/rsw_/NeRFAttack/results/blender_for_attack/' + args.scene_name + '/'
+    logging.info('no.100 the mean img')
+    logging.info('--------------------------------------------------')
+    path = '~/Neurips2023/ViewFool_/Jay_output/' + args.scene_name + '/'
     test_baseline(path=path, label=args.label_name, model='vit', is_mean=True)
 
     #x = render_image(best_solutions)
@@ -677,7 +678,7 @@ def NES_search():
                   sigma_lambda=args.sigma_lamba
                   )
 
-    logging = {'mu': [], 'sigma': [], 'fitness': [], 'entropy':[]}
+    stats_logging = {'mu': [], 'sigma': [], 'fitness': [], 'entropy':[]}
     history = []
     fitness_origin = []
     history_best_solution = []
@@ -721,15 +722,15 @@ def NES_search():
       max_idx = np.argmax(fitness_list)
       history_best_solution.append(solutions[max_idx])
       if (j + 1) % 1 == 0:
-        print("fitness at iteration\n", (j + 1), max(fitness_origin))
-        print("average fitness at iteration\n", (j + 1), average_fitness)
-        print("sigma at iteration\n", (j + 1), result[3])
-        print("mu at iteration\n", (j + 1), result[0])
+        logging.info(f"fitness at iteration\n {(j + 1)} {max(fitness_origin)}")
+        logging.info(f"average fitness at iteration\n {(j + 1)} {average_fitness}")
+        logging.info(f"sigma at iteration\n {(j + 1)} {result[3]}")
+        logging.info(f"mu at iteration\n {(j + 1)} {result[0]}")
 
-        logging['fitness'].append(result[1])
-        logging['sigma'].append(result[3])
-        logging['mu'].append(result[0])
-        logging['entropy'].append(solver.entropy)
+        stats_logging['fitness'].append(result[1])
+        stats_logging['sigma'].append(result[3])
+        stats_logging['mu'].append(result[0])
+        stats_logging['entropy'].append(solver.entropy)
       # print('fitness_list', fitness_list)
   
       #if average_fitness > max_stop_fitness:
@@ -766,7 +767,7 @@ def NES_search():
     mu = random.mean(axis=0)
     var = (random - mu).T @ (random - mu) / random.shape[0]
     var = np.sqrt(np.diagonal(var))  # this is slightly suboptimal, but instructive
-    print('final sigma after tanh(var)', var)
+    logging.info(f'final sigma after tanh(var) {var}')
 
     mu = np.zeros([6])
     mu[0] = 0.0
@@ -776,22 +777,22 @@ def NES_search():
     mu[4] = 0.5 * np.tanh(result[0][1])
     mu[5] = 0.5 * np.tanh(result[0][2])
 
-    print('final mu after tanh(mean)', mu)
+    logging.info(f'final mu after tanh(mean) {mu}')
 
     "Render 100 images of this distribution"
-    print('begin render 100 images in current adv-distribution')
-    print('--------------------------------------------------')
+    logging.info('begin render 100 images in current adv-distribution')
+    logging.info('--------------------------------------------------')
     render_image(random, is_over=True)
 
     "Verify Accuracy"
-    print('begin test the accuracy')
-    print('--------------------------------------------------')
-    path = '/HOME/scz1972/run/rsw_/NeRFAttack/run_NES_P/results/blender_for_attack/' + args.scene_name + '/'
+    logging.info('begin test the accuracy')
+    logging.info('--------------------------------------------------')
+    path = '~/Neurips2023/ViewFool_/Jay_output/' + args.scene_name + '/'
     test_baseline(path=path, label=args.label_name, model='vit')
 
-    print('no.100 the mean img')
-    print('--------------------------------------------------')
-    path = '/HOME/scz1972/run/rsw_/NeRFAttack/results/blender_for_attack/' + args.scene_name + '/'
+    logging.info('no.100 the mean img')
+    logging.info('--------------------------------------------------')
+    path = '~/Neurips2023/ViewFool_/Jay_output/' + args.scene_name + '/'
     test_baseline(path=path, label=args.label_name, model='vit', is_mean=True)
 
     #x = render_image(best_solutions)

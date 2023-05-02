@@ -6,17 +6,27 @@ import cv2
 from PIL import Image
 import math
 import numpy as np
-from zmq import device
+# from zmq import device
 import os
 import timm
+
+from torchvision.models.resnet import ResNet, Bottleneck
+from torchvision.models import resnet152
+from functools import partial
+import sys
+sys.path.append('/cifs/data/tserre_lrs/projects/prj_video_imagenet/mae')
+import models_vit
+import timm
+from transformers import AutoFeatureExtractor, ResNetForImageClassification
+import torch.nn as nn
 
 # import matplotlib.pyplot as plt
 
 # device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 # print(dir(models))
 
-from robustness import model_utils
-from robustness.datasets import ImageNet
+# from robustness import model_utils
+# from robustness.datasets import ImageNet
 
 # OUT_DIR = '/tmp/'
 # NUM_WORKERS = 16
@@ -64,8 +74,8 @@ def test_baseline(path, label, model, is_mean=False):
     tensor_data = [] # pytorch tensor
 
     for name in images_name:
-        print('name:')
-        print(name)
+        #print('name:')
+        # print(name)
         if is_mean:
             if name == '100.png':
                 img = cv2.imread(images_path + name)
@@ -73,7 +83,7 @@ def test_baseline(path, label, model, is_mean=False):
                 continue
         else:
             img = cv2.imread(images_path + name)
-        print(f"name: {images_path+name}, opencv image shape: {img.shape}") # (h,w,c)
+        #print(f"name: {images_path+name}, opencv image shape: {img.shape}") # (h,w,c)
         images_data.append(img)
         img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
         img_pil = Image.fromarray(img)
@@ -144,7 +154,7 @@ def test_baseline(path, label, model, is_mean=False):
         
         imagenet_ds = ImageNet('data/pathl')
         model , _ = model_utils.make_and_restore_model(arch="resnet50", dataset=imagenet_ds, 
-resume_path='/HOME/scz1972/.cache/torch/hub/checkpoints/other/resnet50_l2_eps1.ckpt', parallel=False, add_custom_forward=True)
+        resume_path='/HOME/scz1972/.cache/torch/hub/checkpoints/other/resnet50_l2_eps1.ckpt', parallel=False, add_custom_forward=True)
         model.eval()
         model.cuda()
         transform = transforms.Compose([transforms.Resize((248, 248)),transforms.CenterCrop(224),transforms.ToTensor(), ])
@@ -158,7 +168,7 @@ resume_path='/HOME/scz1972/.cache/torch/hub/checkpoints/other/resnet50_l2_eps1.c
 
         imagenet_ds = ImageNet('data/pathl')
         model , _ = model_utils.make_and_restore_model(arch="resnet50", dataset=imagenet_ds, 
-resume_path='/HOME/scz1972/.cache/torch/hub/checkpoints/other/resnet50_l2_eps3.ckpt', parallel=False, add_custom_forward=True)
+        resume_path='/HOME/scz1972/.cache/torch/hub/checkpoints/other/resnet50_l2_eps3.ckpt', parallel=False, add_custom_forward=True)
         model.eval()
         model.cuda()
         transform = transforms.Compose([transforms.Resize((248, 248)),transforms.CenterCrop(224),transforms.ToTensor(), ])
@@ -171,7 +181,7 @@ resume_path='/HOME/scz1972/.cache/torch/hub/checkpoints/other/resnet50_l2_eps3.c
         # model.load_state_dict(checkpoint['state_dict'])
         imagenet_ds = ImageNet('data/pathl')
         model , _ = model_utils.make_and_restore_model(arch="resnet50", dataset=imagenet_ds, 
-resume_path='/HOME/scz1972/.cache/torch/hub/checkpoints/other/resnet50_l2_eps5.ckpt', parallel=False, add_custom_forward=True)
+        resume_path='/HOME/scz1972/.cache/torch/hub/checkpoints/other/resnet50_l2_eps5.ckpt', parallel=False, add_custom_forward=True)
         model.eval()
         model.cuda()
         transform = transforms.Compose([transforms.Resize((248, 248)),transforms.CenterCrop(224),transforms.ToTensor(), ])
@@ -238,6 +248,8 @@ resume_path='/HOME/scz1972/.cache/torch/hub/checkpoints/other/resnet50_l2_eps5.c
         model = timm.create_model('resnet101', pretrained=True).cuda()
     if model == 'resnet152':
         model = timm.create_model('resnet152', pretrained=True).cuda()
+        
+        print('Jay testing')
     if model == 'efficientnet_b1':
         model = timm.create_model('efficientnet_b1', pretrained=True).cuda()
     if model == 'efficientnet_b2':
@@ -316,16 +328,32 @@ resume_path='/HOME/scz1972/.cache/torch/hub/checkpoints/other/resnet50_l2_eps5.c
         model = torch.nn.DataParallel(model).cuda()
         # model = model.cuda()
 
-        print(model)
+        #print(model)
 
 
+
+    # If statement courtesy of the great Jay Gopal
+    if isinstance(model, str):
+        # model wasn't a preloaded one - it must be a path!
+        model_path = model
+        model_description = partial(models_vit.__dict__['vit_base_patch16'], num_classes=1000,
+        drop_path_rate=0.1, global_pool=True)
+        model = model_description()
+        state_dict = torch.load(model_path)['model']
+        model.load_state_dict(state_dict)
+
+        num_gpus = torch.cuda.device_count()
+        all_parallel_devices = [i for i in range(num_gpus)] #list of GPU IDs to use for model evaluation
+        
+        model=nn.DataParallel(model, device_ids=all_parallel_devices).cuda()
+        # print(model)
 
 
 
     device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
     model.eval()
 
-    with open("/HOME/scz1972/run/rsw_/NeRFAttack/classifier/imagenet_classes.txt") as f:
+    with open("./classifier/imagenet_classes.txt") as f:
         classes = [line.strip() for line in f.readlines()]
 
 
@@ -364,7 +392,7 @@ resume_path='/HOME/scz1972/.cache/torch/hub/checkpoints/other/resnet50_l2_eps5.c
             class_ = []
             for i in range(top_num):
                 class_.append(classes[topclass.cpu().numpy()[0][i]])
-            print("Output class : ", class_)
+            # print("Output class : ", class_)
 
             #true_label = np.zeros((1, 1000))
             #true_label[:, 817] = 1.0
@@ -372,7 +400,7 @@ resume_path='/HOME/scz1972/.cache/torch/hub/checkpoints/other/resnet50_l2_eps5.c
             #loss_func = torch.nn.CrossEntropyLoss()
 
             #print('loss:', loss_func(prediction, true_label.to(device)))
-            print('score:', np.max(ps.cpu().numpy())/np.sum(ps.cpu().numpy()))
+            # print('score:', np.max(ps.cpu().numpy())/np.sum(ps.cpu().numpy()))
 
             for i in range(len(topclass.cpu().numpy()[0])):
                 if classes[topclass.cpu().numpy()[0][i]] == label:

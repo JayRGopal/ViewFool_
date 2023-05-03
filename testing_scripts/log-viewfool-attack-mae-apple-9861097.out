@@ -1,0 +1,16 @@
+## SLURM PROLOG ###############################################################
+##    Job ID : 9861097
+##  Job Name : viewfool-attack-mae
+##  Nodelist : gpu2007
+##      CPUs : 16
+##  Mem/Node : 102400 MB
+## Directory : /gpfs/home/jgopal/Neurips2023/ViewFool_/testing_scripts
+##   Job Started : Tue May  2 22:33:17 EDT 2023
+###############################################################################
+module: loading 'anaconda/latest'
+module: anaconda: This module will be updated without notice, as it is a symbolic to the latest anaconda module. See https://docs.ccv.brown.edu/oscar/software/anaconda for potential issues on VNC and batch jobs
+module: loading 'gcc/10.2'
+module: gcc: "Note: loading the gcc module overrides the gcc version on the system.  If you want to revert to the version of gcc provided by the OS, unload the gcc module."
+module: unloading 'python/2.7.12'
+module: loading 'python/3.9.0'
+  0%|          | 0/51 [00:00<?, ?it/s] 12%|█▏        | 6/51 [00:14<01:46,  2.36s/it] 18%|█▊        | 9/51 [00:39<03:24,  4.86s/it] 24%|██▎       | 12/51 [01:04<04:01,  6.18s/it] 29%|██▉       | 15/51 [01:30<04:12,  7.01s/it]

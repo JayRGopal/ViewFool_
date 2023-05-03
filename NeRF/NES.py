@@ -487,11 +487,15 @@ def NES_search():
     render_image(random, is_over=True)
 
     "Verify Accuracy"
+
+    #TODO: CHANGE THIS MODEL PATH
+    model_path_hardcoded = '/cifs/data/tserre_lrs/projects/prj_video_imagenet/models_to_test/outs_finetune_e2D_d2D_pretrain_vitbase_patch16_224_IN_jump4_checkpoint-99.pth'
+
     logging.info('begin test the accuracy')
     logging.info('--------------------------------------------------')
-    path = '~/Neurips2023/ViewFool_/Jay_output/' + args.scene_name + '/'
-    test_baseline(path=path, label=args.label_name, model='resnet')
-
+    path = '~/Neurips2023/ViewFool_/results/' + args.dataset_name + '/' +  args.scene_name + '/' 
+    test_baseline(path=path, label=args.label_name, model=model_path_hardcoded)
+    
     logging.info('entropy')
     logging.info('--------------------------------------------------')
     logging.info(f"{solver.entropy}")
@@ -499,8 +503,8 @@ def NES_search():
 
     logging.info('no.100 the mean img')
     logging.info('--------------------------------------------------')
-    path = '~/Neurips2023/ViewFool_/Jay_output/' + args.scene_name + '/'
-    test_baseline(path=path, label=args.label_name, model='resnet', is_mean=True)
+    path = '~/Neurips2023/ViewFool_/results/' + args.dataset_name + '/' +  args.scene_name + '/' 
+    test_baseline(path=path, label=args.label_name, model=model_path_hardcoded, is_mean=True)
 
 
     #x = render_image(best_solutions)

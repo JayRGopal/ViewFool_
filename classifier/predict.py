@@ -7,9 +7,20 @@ import math
 import numpy as np
 # from zmq import device
 import os
+import logging
 
 # device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 # print(dir(models))
+
+from torchvision.models.resnet import ResNet, Bottleneck
+from torchvision.models import resnet152
+from functools import partial
+import sys
+sys.path.append('/cifs/data/tserre_lrs/projects/prj_video_imagenet/mae')
+import models_vit
+import timm
+from transformers import AutoFeatureExtractor, ResNetForImageClassification
+import torch.nn as nn
 
 
 def test_baseline(path, label, model='resnet', is_mean=False):
@@ -51,16 +62,31 @@ def test_baseline(path, label, model='resnet', is_mean=False):
         #print(f"tensor shape: {tensor.shape}, max: {torch.max(tensor)}, min: {torch.min(tensor)}") # (1,c,h,w)
         tensor_data.append(tensor)
 
-
+    logging.info(f'JAY & NICK ADDED THIS: MODEL = {model}')
     if model=='resnet':
+        for unique_iterator in range(10):
+            logging.info('JAY & NICK - AT THE RESNET PATH')
         model = models.resnet50(pretrained=False)
         checkpoint = '/HOME/scz1972/run/rsw_/NeRFAttack/NeRF/ckpts/resnet50-0676ba61.pth'
         model.load_state_dict(torch.load(checkpoint))
 
-    if model=='vit':
+    elif model=='vit':
         model = models.vit_b_16(pretrained=False)
         checkpoint = '/HOME/scz1972/run/rsw_/NeRFAttack/NeRF/ckpts/vit_b_16-c867db91.pth'
         model.load_state_dict(torch.load(checkpoint))
+
+    else:
+        model_path = model
+        model_description = partial(models_vit.__dict__['vit_base_patch16'], num_classes=1000,
+        drop_path_rate=0.1, global_pool=True)
+        model = model_description()
+        state_dict = torch.load(model_path)['model']
+        model.load_state_dict(state_dict)
+
+        num_gpus = torch.cuda.device_count()
+        all_parallel_devices = [i for i in range(num_gpus)] #list of GPU IDs to use for model evaluation
+        
+        model=nn.DataParallel(model, device_ids=all_parallel_devices).cuda()
 
     # model = models.resnet101(pretrained=True)
     # model = models.inception_v3(pretrained=True)

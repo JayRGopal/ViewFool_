@@ -1,0 +1,55 @@
+## SLURM PROLOG ###############################################################
+##    Job ID : 9807387
+##  Job Name : viewfool-attack
+##  Nodelist : gpu2009
+##      CPUs : 16
+##  Mem/Node : 102400 MB
+## Directory : /gpfs/home/jgopal/Neurips2023/ViewFool_/testing_scripts
+##   Job Started : Sun Apr 30 00:59:04 EDT 2023
+###############################################################################
+module: loading 'anaconda/latest'
+module: anaconda: This module will be updated without notice, as it is a symbolic to the latest anaconda module. See https://docs.ccv.brown.edu/oscar/software/anaconda for potential issues on VNC and batch jobs
+module: loading 'gcc/10.2'
+module: gcc: "Note: loading the gcc module overrides the gcc version on the system.  If you want to revert to the version of gcc provided by the OS, unload the gcc module."
+module: unloading 'python/2.7.12'
+module: loading 'python/3.9.0'
+entropy:
+ tensor([-2.0576, -1.7800, -1.6682, -1.8076, -2.0659, -1.8382],
+       grad_fn=<DivBackward0>)
+Entropy:
+ tensor(-11.2176, grad_fn=<SumBackward0>)
+test
+  0%|          | 0/51 [00:00<?, ?it/s]/users/jgopal/.local/lib/python3.9/site-packages/torchvision/models/_utils.py:208: UserWarning: The parameter 'pretrained' is deprecated since 0.13 and may be removed in the future, please use 'weights' instead.
+  warnings.warn(
+/users/jgopal/.local/lib/python3.9/site-packages/torchvision/models/_utils.py:223: UserWarning: Arguments other than a weight enum or `None` for 'weights' are deprecated since 0.13 and may be removed in the future. The current behavior is equivalent to passing `weights=ResNet50_Weights.IMAGENET1K_V1`. You can also use `weights=ResNet50_Weights.DEFAULT` to get the most up-to-date weights.
+  warnings.warn(msg)
+/users/jgopal/.local/lib/python3.9/site-packages/torchvision/models/_utils.py:208: UserWarning: The parameter 'pretrained' is deprecated since 0.13 and may be removed in the future, please use 'weights' instead.
+  warnings.warn(
+/users/jgopal/.local/lib/python3.9/site-packages/torchvision/models/_utils.py:223: UserWarning: Arguments other than a weight enum or `None` for 'weights' are deprecated since 0.13 and may be removed in the future. The current behavior is equivalent to passing `weights=ResNet50_Weights.IMAGENET1K_V1`. You can also use `weights=ResNet50_Weights.DEFAULT` to get the most up-to-date weights.
+  warnings.warn(msg)
+/users/jgopal/.local/lib/python3.9/site-packages/torchvision/models/_utils.py:208: UserWarning: The parameter 'pretrained' is deprecated since 0.13 and may be removed in the future, please use 'weights' instead.
+  warnings.warn(
+/users/jgopal/.local/lib/python3.9/site-packages/torchvision/models/_utils.py:223: UserWarning: Arguments other than a weight enum or `None` for 'weights' are deprecated since 0.13 and may be removed in the future. The current behavior is equivalent to passing `weights=ResNet50_Weights.IMAGENET1K_V1`. You can also use `weights=ResNet50_Weights.DEFAULT` to get the most up-to-date weights.
+  warnings.warn(msg)
+ 12%|█▏        | 6/51 [00:23<02:57,  3.94s/it] 18%|█▊        | 9/51 [00:42<03:25,  4.90s/it] 24%|██▎       | 12/51 [01:00<03:29,  5.37s/it] 29%|██▉       | 15/51 [01:18<03:19,  5.55s/it] 35%|███▌      | 18/51 [01:36<03:08,  5.70s/it] 41%|████      | 21/51 [01:54<02:54,  5.81s/it] 47%|████▋     | 24/51 [02:12<02:38,  5.86s/it] 53%|█████▎    | 27/51 [02:30<02:21,  5.90s/it] 59%|█████▉    | 30/51 [02:48<02:04,  5.92s/it] 65%|██████▍   | 33/51 [03:06<01:47,  5.96s/it] 71%|███████   | 36/51 [03:24<01:30,  6.00s/it] 76%|███████▋  | 39/51 [03:43<01:12,  6.03s/it] 82%|████████▏ | 42/51 [04:01<00:54,  6.07s/it] 88%|████████▊ | 45/51 [04:20<00:36,  6.11s/it] 94%|█████████▍| 48/51 [04:39<00:18,  6.15s/it]100%|██████████| 51/51 [04:57<00:00,  6.18s/it]100%|██████████| 51/51 [04:57<00:00,  5.84s/it]
+mu-loss1: [-0.0340488  -0.28110296 -0.78443293 -0.01533329  0.06959217 -0.20912664]
+mu-loss2: [-9.3132255e-12  0.0000000e+00 -2.7939677e-11  0.0000000e+00
+  4.6566128e-12  0.0000000e+00]
+sigma-loss1: [-0.00468683  0.00335755  0.00871825  0.0020278  -0.00712151  0.00348889]
+sigma-loss2: [0.09900347 0.09789026 0.0974512  0.09800074 0.09904138 0.09812082]
+fitness at iteration
+ 1 0.8957285284996033
+average fitness at iteration
+ 1 0.035982433259121926
+sigma at iteration
+ 1 [0.11874447 0.11988    0.11988    0.11988    0.11826559 0.11988   ]
+mu at iteration
+ 1 [-0.11690533  0.08704545 -0.31537695  0.04085037 -0.02396192 -0.01574684]
+entropy:
+ tensor([-1.5750, -1.4684, -1.7109, -1.7497, -1.7045, -1.6286],
+       grad_fn=<DivBackward0>)
+Entropy:
+ tensor(-9.8371, grad_fn=<SumBackward0>)
+test
+  0%|          | 0/51 [00:00<?, ?it/s] 12%|█▏        | 6/51 [00:13<01:41,  2.25s/it] 18%|█▊        | 9/51 [00:26<02:13,  3.19s/it] 24%|██▎       | 12/51 [00:52<03:22,  5.20s/it] 29%|██▉       | 15/51 [01:06<02:58,  4.95s/it] 35%|███▌      | 18/51 [01:30<03:19,  6.05s/it] 41%|████      | 21/51 [01:44<02:46,  5.54s/it] 47%|████▋     | 24/51 [02:08<02:51,  6.34s/it] 53%|█████▎    | 27/51 [02:22<02:18,  5.77s/it] 59%|█████▉    | 30/51 [02:45<02:15,  6.43s/it] 65%|██████▍   | 33/51 [02:59<01:46,  5.89s/it] 71%|███████   | 36/51 [03:23<01:37,  6.50s/it] 76%|███████▋  | 39/51 [03:37<01:11,  5.95s/it] 82%|████████▏ | 42/51 [04:01<00:58,  6.54s/it] 88%|████████▊ | 45/51 [04:15<00:35,  5.97s/it] 94%|█████████▍| 48/51 [04:39<00:19,  6.56s/it]100%|██████████| 51/51 [04:52<00:00,  5.98s/it]100%|██████████| 51/51 [04:52<00:00,  5.74s/it]
+slurmstepd: error: *** JOB 9807387 ON gpu2009 CANCELLED AT 2023-05-02T01:27:22 ***

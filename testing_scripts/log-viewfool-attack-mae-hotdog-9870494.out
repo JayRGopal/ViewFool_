@@ -1,0 +1,23 @@
+## SLURM PROLOG ###############################################################
+##    Job ID : 9870494
+##  Job Name : viewfool-attack-mae
+##  Nodelist : gpu2008
+##      CPUs : 16
+##  Mem/Node : 102400 MB
+## Directory : /gpfs/home/jgopal/Neurips2023/ViewFool_/testing_scripts
+##   Job Started : Fri May  5 02:43:47 EDT 2023
+###############################################################################
+module: loading 'anaconda/latest'
+module: anaconda: This module will be updated without notice, as it is a symbolic to the latest anaconda module. See https://docs.ccv.brown.edu/oscar/software/anaconda for potential issues on VNC and batch jobs
+module: loading 'gcc/10.2'
+module: gcc: "Note: loading the gcc module overrides the gcc version on the system.  If you want to revert to the version of gcc provided by the OS, unload the gcc module."
+module: unloading 'python/2.7.12'
+module: loading 'python/3.9.0'
+entropy:
+ tensor([-1.6634, -1.7376, -1.8217, -2.0231, -1.9230, -1.8659],
+       grad_fn=<DivBackward0>)
+Entropy:
+ -11.034592628479004
+--=Starting one camera view optimization sequence=--
+  0%|          | 0/51 [00:00<?, ?it/s] 12%|█▏        | 6/51 [00:29<03:44,  4.98s/it] 18%|█▊        | 9/51 [00:51<04:08,  5.91s/it] 24%|██▎       | 12/51 [01:13<04:09,  6.39s/it] 29%|██▉       | 15/51 [01:34<04:00,  6.68s/it] 35%|███▌      | 18/51 [01:56<03:46,  6.88s/it] 41%|████      | 21/51 [02:18<03:30,  7.02s/it] 47%|████▋     | 24/51 [02:40<03:10,  7.07s/it] 53%|█████▎    | 27/51 [03:01<02:50,  7.11s/it] 59%|█████▉    | 30/51 [03:23<02:30,  7.17s/it] 65%|██████▍   | 33/51 [03:45<02:09,  7.17s/it] 71%|███████   | 36/51 [04:07<01:48,  7.21s/it] 76%|███████▋  | 39/51 [04:22<01:19,  6.61s/it] 82%|████████▏ | 42/51 [04:38<00:55,  6.18s/it] 88%|████████▊ | 45/51 [05:09<00:44,  7.44s/it] 94%|█████████▍| 48/51 [05:24<00:20,  6.76s/it]100%|██████████| 51/51 [05:54<00:00,  7.70s/it]100%|██████████| 51/51 [05:54<00:00,  6.95s/it]
+slurmstepd: error: *** JOB 9870494 ON gpu2008 CANCELLED AT 2023-05-05T20:52:11 ***

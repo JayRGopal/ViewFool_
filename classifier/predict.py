@@ -62,10 +62,10 @@ def test_baseline(path, label, model='resnet', is_mean=False):
         #print(f"tensor shape: {tensor.shape}, max: {torch.max(tensor)}, min: {torch.min(tensor)}") # (1,c,h,w)
         tensor_data.append(tensor)
 
-    logging.info(f'JAY & NICK ADDED THIS: MODEL = {model}')
+    print(f'JAY & NICK ADDED THIS: MODEL = {model}')
     if model=='resnet':
         for unique_iterator in range(10):
-            logging.info('JAY & NICK - AT THE RESNET PATH')
+            print('JAY & NICK - AT THE RESNET PATH')
         model = models.resnet50(pretrained=False)
         checkpoint = '/HOME/scz1972/run/rsw_/NeRFAttack/NeRF/ckpts/resnet50-0676ba61.pth'
         model.load_state_dict(torch.load(checkpoint))
@@ -76,6 +76,7 @@ def test_baseline(path, label, model='resnet', is_mean=False):
         model.load_state_dict(torch.load(checkpoint))
 
     else:
+        print('LOADING IN CUSTOM MODEL IN PREDICT.PY TEST_BASELINE()')
         model_path = model
         model_description = partial(models_vit.__dict__['vit_base_patch16'], num_classes=1000,
         drop_path_rate=0.1, global_pool=True)
@@ -96,11 +97,11 @@ def test_baseline(path, label, model='resnet', is_mean=False):
 
     model.eval()
 
-    with open("/HOME/scz1972/run/rsw_/NeRFAttack/classifier/imagenet_classes.txt") as f:
+    with open("~/Neurips2023/ViewFool_/classifier/imagenet_classes.txt") as f:
         classes = [line.strip() for line in f.readlines()]
 
 
-
+    print("In test_baseline of predict.py, line 104")
 
     acc = 0
 
@@ -141,7 +142,7 @@ def test_baseline(path, label, model='resnet', is_mean=False):
             for i in range(len(topclass.cpu().numpy()[0])):
                 if classes[topclass.cpu().numpy()[0][i]] == label:
                     acc += 1
-
+    
     acc = acc/len(tensor_data)
     print("acc:", acc)
         

@@ -49,8 +49,27 @@ bb = ['hotdog, hot dog, red hot', 'French loaf', 'cheeseburger', 'lemon', 'butte
 # bb = ['French loaf','school bus','computer keyboard, keypad','orange','pineapple, ananas','warplane, military plane','warplane, military plane','running shoe']
 
 
+mapping_file = "/users/jgopal/Neurips2023/ViewFool_/co3d_to_imagenet.json"
+with open(mapping_file,"r") as f:
+    mapping = json.load(f) 
 
+# Unique classes in objectnet from co3D mapping (values of dictionary)
+unique_values = set()
+
+for value in mapping.values():
+    if isinstance(value, list):
+        unique_values.update(value)
+    else:
+        unique_values.add(value)
+
+# Get rid of None
+unique_values.discard("None")
+
+overlap_co3d = list(unique_values) 
+
+#print(overlap_co3d)
 accs = []
+count_overlap_classes = 0
 for i in range(0,100):
     # path_1 = "/HOME/scz1972/run/rsw_/NeRFAttack/NeRF/phyattack_real_datta/phyattack_real_datta/" + aa[i] +"/"
     path_1 = "/cifs/data/tserre/CLPS_Serre_Lab/projects/prj_video_imagenet/Gopal-ImageNet-V/" + aa[i] +"/"
@@ -61,17 +80,22 @@ for i in range(0,100):
 
     models.append(opt.model)
     mode = 'test_nerf_data_black_attack'
-# mode = 0
     if mode == 'test_nerf_data_black_attack':
         
         for model in models:
             acc = test_baseline (path=path_1, label=label_1, model=model)
             # acc = test_baseline (path="/HOME/scz1972/run/rsw_/NeRFAttack/NeRF/nerf_blackbox_data/resnet_AP_lamba0/apple_2/", label='Granny Smith', model=model)
-            accs.append(acc)
+            # ONLY TEST IF IN CO3D OVERLAP!!!
+            if label_1 in overlap_co3d:
+                acc = test_baseline (path=path_1, label=label_1, model=model)
+                accs.append(acc)
+                count_overlap_classes += 1
+
 print(accs)
 final_acc = sum(accs) / len(accs)
 
 print(f'FINAL ACCURACY: {final_acc}')
+print(f'NUM CLASSES OVERLAPPING WITH CO3D: {count_overlap_classes}')
 
 SAVING = opt.savepath
 with open(SAVING, 'w') as json_file:

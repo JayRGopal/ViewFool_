@@ -1,0 +1,66 @@
+## SLURM PROLOG ###############################################################
+##    Job ID : 9807817
+##  Job Name : viewfool-attack-mae
+##  Nodelist : gpu1403
+##      CPUs : 16
+##  Mem/Node : 102400 MB
+## Directory : /gpfs/home/jgopal/Neurips2023/ViewFool_/testing_scripts
+##   Job Started : Sun Apr 30 01:04:43 EDT 2023
+###############################################################################
+module: loading 'anaconda/latest'
+module: anaconda: This module will be updated without notice, as it is a symbolic to the latest anaconda module. See https://docs.ccv.brown.edu/oscar/software/anaconda for potential issues on VNC and batch jobs
+module: loading 'gcc/10.2'
+module: gcc: "Note: loading the gcc module overrides the gcc version on the system.  If you want to revert to the version of gcc provided by the OS, unload the gcc module."
+module: unloading 'python/2.7.12'
+module: loading 'python/3.9.0'
+entropy:
+ tensor([-1.6268, -1.9045, -1.6055, -1.6310, -1.8748, -2.0868],
+       grad_fn=<DivBackward0>)
+Entropy:
+ tensor(-10.7294, grad_fn=<SumBackward0>)
+test
+  0%|          | 0/51 [00:00<?, ?it/s] 12%|█▏        | 6/51 [00:16<02:01,  2.71s/it]joblib.externals.loky.process_executor._RemoteTraceback: 
+"""
+Traceback (most recent call last):
+  File "/users/jgopal/.local/lib/python3.9/site-packages/joblib/externals/loky/process_executor.py", line 436, in _process_worker
+    r = call_item()
+  File "/users/jgopal/.local/lib/python3.9/site-packages/joblib/externals/loky/process_executor.py", line 288, in __call__
+    return self.fn(*self.args, **self.kwargs)
+  File "/users/jgopal/.local/lib/python3.9/site-packages/joblib/_parallel_backends.py", line 595, in __call__
+    return self.func(*args, **kwargs)
+  File "/users/jgopal/.local/lib/python3.9/site-packages/joblib/parallel.py", line 262, in __call__
+    return [func(*args, **kwargs)
+  File "/users/jgopal/.local/lib/python3.9/site-packages/joblib/parallel.py", line 262, in <listcomp>
+    return [func(*args, **kwargs)
+  File "/gpfs/home/jgopal/Neurips2023/ViewFool_/NeRF/evaluate.py", line 143, in comput_fitness
+    reward = metric(prediction, label=true_label, target_label=target_label, target_flag=args.target_flag)
+  File "/gpfs/home/jgopal/Neurips2023/ViewFool_/NeRF/evaluate.py", line 37, in metric
+    loss = loss_func(prediction, label)
+  File "/users/jgopal/.local/lib/python3.9/site-packages/torch/nn/modules/module.py", line 1190, in _call_impl
+    return forward_call(*input, **kwargs)
+  File "/users/jgopal/.local/lib/python3.9/site-packages/torch/nn/modules/loss.py", line 1174, in forward
+    return F.cross_entropy(input, target, weight=self.weight,
+  File "/users/jgopal/.local/lib/python3.9/site-packages/torch/nn/functional.py", line 3026, in cross_entropy
+    return torch._C._nn.cross_entropy_loss(input, target, weight, _Reduction.get_enum(reduction), ignore_index, label_smoothing)
+RuntimeError: Expected all tensors to be on the same device, but found at least two devices, cuda:0 and cpu!
+"""
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/gpfs/home/jgopal/Neurips2023/ViewFool_/NeRF/ViewFool.py", line 11, in <module>
+    NES_search()
+  File "/gpfs/home/jgopal/Neurips2023/ViewFool_/NeRF/NES.py", line 405, in NES_search
+    fitness_list = parallel(joblib.delayed(comput_fitness)(solutions[i], solver.sigma) for i in tqdm(range(solver.popsize)))
+  File "/users/jgopal/.local/lib/python3.9/site-packages/joblib/parallel.py", line 1056, in __call__
+    self.retrieve()
+  File "/users/jgopal/.local/lib/python3.9/site-packages/joblib/parallel.py", line 935, in retrieve
+    self._output.extend(job.get(timeout=self.timeout))
+  File "/users/jgopal/.local/lib/python3.9/site-packages/joblib/_parallel_backends.py", line 542, in wrap_future_result
+    return future.result(timeout=timeout)
+  File "/gpfs/runtime/opt/anaconda/2022.05/lib/python3.9/concurrent/futures/_base.py", line 446, in result
+    return self.__get_result()
+  File "/gpfs/runtime/opt/anaconda/2022.05/lib/python3.9/concurrent/futures/_base.py", line 391, in __get_result
+    raise self._exception
+RuntimeError: Expected all tensors to be on the same device, but found at least two devices, cuda:0 and cpu!
+ 22%|██▏       | 11/51 [00:16<01:00,  1.52s/it]

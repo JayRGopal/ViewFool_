@@ -91,8 +91,8 @@ def render_image(all_args, is_over=False):
     
     insert1 = args.dataset_name 
     insert2 = args.scene_name 
-    dir_name = "results/" + insert1 + "/" + insert2
-    
+    dir_name = "resultsMay5/" + insert1 + "/" + insert2
+     
     os.makedirs(dir_name, exist_ok=True)
 
     

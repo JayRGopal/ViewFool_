@@ -1,0 +1,58 @@
+## SLURM PROLOG ###############################################################
+##    Job ID : 9855181
+##  Job Name : viewfool-attack-mae
+##  Nodelist : gpu2006
+##      CPUs : 16
+##  Mem/Node : 102400 MB
+## Directory : /gpfs/home/jgopal/Neurips2023/ViewFool_/testing_scripts
+##   Job Started : Tue May  2 02:27:36 EDT 2023
+###############################################################################
+module: loading 'anaconda/latest'
+module: anaconda: This module will be updated without notice, as it is a symbolic to the latest anaconda module. See https://docs.ccv.brown.edu/oscar/software/anaconda for potential issues on VNC and batch jobs
+module: loading 'gcc/10.2'
+module: gcc: "Note: loading the gcc module overrides the gcc version on the system.  If you want to revert to the version of gcc provided by the OS, unload the gcc module."
+module: unloading 'python/2.7.12'
+module: loading 'python/3.9.0'
+  0%|          | 0/51 [00:00<?, ?it/s] 12%|█▏        | 6/51 [00:50<06:21,  8.47s/it] 18%|█▊        | 9/51 [01:16<05:55,  8.47s/it] 24%|██▎       | 12/51 [01:41<05:30,  8.49s/it] 29%|██▉       | 15/51 [02:07<05:06,  8.52s/it] 35%|███▌      | 18/51 [02:33<04:41,  8.54s/it] 41%|████      | 21/51 [02:59<04:16,  8.56s/it] 47%|████▋     | 24/51 [03:24<03:51,  8.59s/it] 53%|█████▎    | 27/51 [03:51<03:26,  8.61s/it] 59%|█████▉    | 30/51 [04:16<03:01,  8.62s/it] 65%|██████▍   | 33/51 [04:42<02:35,  8.63s/it] 71%|███████   | 36/51 [05:08<02:09,  8.64s/it] 76%|███████▋  | 39/51 [05:34<01:43,  8.64s/it] 82%|████████▏ | 42/51 [06:00<01:17,  8.66s/it] 88%|████████▊ | 45/51 [06:26<00:51,  8.66s/it] 94%|█████████▍| 48/51 [06:52<00:25,  8.66s/it]100%|██████████| 51/51 [07:18<00:00,  8.66s/it]100%|██████████| 51/51 [07:18<00:00,  8.61s/it]
+joblib.externals.loky.process_executor._RemoteTraceback: 
+"""
+Traceback (most recent call last):
+  File "/users/jgopal/.local/lib/python3.9/site-packages/joblib/externals/loky/process_executor.py", line 436, in _process_worker
+    r = call_item()
+  File "/users/jgopal/.local/lib/python3.9/site-packages/joblib/externals/loky/process_executor.py", line 288, in __call__
+    return self.fn(*self.args, **self.kwargs)
+  File "/users/jgopal/.local/lib/python3.9/site-packages/joblib/_parallel_backends.py", line 595, in __call__
+    return self.func(*args, **kwargs)
+  File "/users/jgopal/.local/lib/python3.9/site-packages/joblib/parallel.py", line 262, in __call__
+    return [func(*args, **kwargs)
+  File "/users/jgopal/.local/lib/python3.9/site-packages/joblib/parallel.py", line 262, in <listcomp>
+    return [func(*args, **kwargs)
+  File "/gpfs/home/jgopal/Neurips2023/ViewFool_/NeRF/evaluate.py", line 79, in comput_fitness
+    x = render_image(solution) # ndarray [W,H,C]
+  File "/gpfs/home/jgopal/Neurips2023/ViewFool_/NeRF/rendering_image.py", line 66, in render_image
+    dataset = dataset_dict[args.dataset_name](**kwargs)
+  File "/gpfs/home/jgopal/Neurips2023/ViewFool_/NeRF/datasets/blender_for_attack.py", line 68, in __init__
+    self.read_meta()
+  File "/gpfs/home/jgopal/Neurips2023/ViewFool_/NeRF/datasets/blender_for_attack.py", line 77, in read_meta
+    with open(os.path.join(self.root_dir,
+BlockingIOError: [Errno 11] Resource temporarily unavailable: '/cifs/data/tserre/CLPS_Serre_Lab/projects/prj_video_imagenet/Gopal-ViewFool-Training/1.1hotdog/transforms_test.json'
+"""
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/gpfs/home/jgopal/Neurips2023/ViewFool_/NeRF/ViewFool.py", line 11, in <module>
+    NES_search()
+  File "/gpfs/home/jgopal/Neurips2023/ViewFool_/NeRF/NES.py", line 406, in NES_search
+    fitness_list = parallel(joblib.delayed(comput_fitness)(solutions[i], solver.sigma) for i in tqdm(range(solver.popsize)))
+  File "/users/jgopal/.local/lib/python3.9/site-packages/joblib/parallel.py", line 1056, in __call__
+    self.retrieve()
+  File "/users/jgopal/.local/lib/python3.9/site-packages/joblib/parallel.py", line 935, in retrieve
+    self._output.extend(job.get(timeout=self.timeout))
+  File "/users/jgopal/.local/lib/python3.9/site-packages/joblib/_parallel_backends.py", line 542, in wrap_future_result
+    return future.result(timeout=timeout)
+  File "/gpfs/runtime/opt/anaconda/2022.05/lib/python3.9/concurrent/futures/_base.py", line 446, in result
+    return self.__get_result()
+  File "/gpfs/runtime/opt/anaconda/2022.05/lib/python3.9/concurrent/futures/_base.py", line 391, in __get_result
+    raise self._exception
+BlockingIOError: [Errno 11] Resource temporarily unavailable: '/cifs/data/tserre/CLPS_Serre_Lab/projects/prj_video_imagenet/Gopal-ViewFool-Training/1.1hotdog/transforms_test.json'

@@ -413,10 +413,14 @@ def NES_search():
 
       print('J&N: --=Starting one camera view optimization sequence=--')
       #  Multi-process
-      with joblib.Parallel(n_jobs=N_JOBS) as parallel:
-        #for i in tqdm(range(solver.popsize)):
-          #fitness_list[i] = comput_fitness(solutions[i])
-        fitness_list = parallel(joblib.delayed(comput_fitness)(solutions[i], solver.sigma) for i in tqdm(range(solver.popsize)))
+      # with joblib.Parallel(n_jobs=N_JOBS) as parallel:
+      #   #for i in tqdm(range(solver.popsize)):
+      #     #fitness_list[i] = comput_fitness(solutions[i])
+      #   fitness_list = parallel(joblib.delayed(comput_fitness)(solutions[i], solver.sigma) for i in tqdm(range(solver.popsize)))
+
+      for i in tqdm(range(solver.popsize)):
+        fitness_list[i] = comput_fitness(solutions[i])
+
 
       print("J&N: about to call solver.tell")
       solver.tell(fitness_list, mu_entropy_grad, sigma_entropy_grad)

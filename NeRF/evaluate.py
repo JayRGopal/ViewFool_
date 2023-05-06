@@ -64,7 +64,7 @@ def compute_ver(sigma, mu, num_sample=1000):
   loss_var = 0.03 * loss_var
   return loss_var
 
-def comput_fitness(solution, sigma):
+def comput_fitness(solution):
     '''
 
     Args:

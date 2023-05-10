@@ -74,6 +74,7 @@ class BlenderDataset_attack(Dataset):
 
 
     def read_meta(self):
+        # output of this gets used for rays
         with open(os.path.join(self.root_dir,
                                f"transforms_{self.split}.json"), 'r') as f:
             self.meta = json.load(f)

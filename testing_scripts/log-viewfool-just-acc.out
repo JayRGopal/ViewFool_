@@ -1,0 +1,110 @@
+
+Copy pasted from manually testing accuracy on the generated images from viewfool.
+
+
+
+[jgopal@gpu2004 testing_scripts]$ sh viewfool-attack-apple.sh
+module: loading 'anaconda/latest'
+module: anaconda: This module will be updated without notice, as it is a symbolic to the latest anaconda module. See https://docs.ccv.brown.edu/oscar/software/anaconda for potential issues on VNC and batch jobs
+module: loading 'gcc/10.2'
+module: gcc: "Note: loading the gcc module overrides the gcc version on the system.  If you want to revert to the version of gcc provided by the OS, unload the gcc module."
+module: unloading 'python/2.7.12'
+module: loading 'python/3.9.0'
+begin test the accuracy
+--------------------------------------------------
+JAY & NICK ADDED THIS: MODEL = /cifs/data/tserre_lrs/projects/prj_video_imagenet/models_to_test/outs_finetune_e2D_d2D_pretrain_vitbase_patch16_224_IN_jump4_checkpoint-99.pth
+LOADING IN CUSTOM MODEL IN PREDICT.PY TEST_BASELINE()
+In test_baseline of predict.py, line 104
+acc: 0.9900990099009901
+ATTACK SUSCEPTIBILITY OVERALL:  0.00990099009900991
+no.100 the mean img
+--------------------------------------------------
+JAY & NICK ADDED THIS: MODEL = /cifs/data/tserre_lrs/projects/prj_video_imagenet/models_to_test/outs_finetune_e2D_d2D_pretrain_vitbase_patch16_224_IN_jump4_checkpoint-99.pth
+LOADING IN CUSTOM MODEL IN PREDICT.PY TEST_BASELINE()
+In test_baseline of predict.py, line 104
+acc: 1.0
+ATTACK SUSCEPTIBILITY MEAN IMG:  0.0
+
+
+
+
+
+[jgopal@gpu2004 testing_scripts]$ sh viewfool-attack-hotdog.sh
+module: loading 'anaconda/latest'
+module: anaconda: This module will be updated without notice, as it is a symbolic to the latest anaconda module. See https://docs.ccv.brown.edu/oscar/software/anaconda for potential issues on VNC and batch jobs
+module: loading 'gcc/10.2'
+module: gcc: "Note: loading the gcc module overrides the gcc version on the system.  If you want to revert to the version of gcc provided by the OS, unload the gcc module."
+module: unloading 'python/2.7.12'
+module: loading 'python/3.9.0'
+begin test the accuracy
+--------------------------------------------------
+JAY & NICK ADDED THIS: MODEL = /cifs/data/tserre_lrs/projects/prj_video_imagenet/models_to_test/outs_finetune_e2D_d2D_pretrain_vitbase_patch16_224_IN_jump4_checkpoint-99.pth
+LOADING IN CUSTOM MODEL IN PREDICT.PY TEST_BASELINE()
+In test_baseline of predict.py, line 104
+acc: 0.9900990099009901
+ATTACK SUSCEPTIBILITY OVERALL:  0.00990099009900991
+no.100 the mean img
+--------------------------------------------------
+JAY & NICK ADDED THIS: MODEL = /cifs/data/tserre_lrs/projects/prj_video_imagenet/models_to_test/outs_finetune_e2D_d2D_pretrain_vitbase_patch16_224_IN_jump4_checkpoint-99.pth
+LOADING IN CUSTOM MODEL IN PREDICT.PY TEST_BASELINE()
+In test_baseline of predict.py, line 104
+acc: 1.0
+ATTACK SUSCEPTIBILITY MEAN IMG:  0.0
+
+
+
+
+
+[jgopal@gpu2004 testing_scripts]$ sh viewfool-attack-co3d-apple.sh
+module: loading 'anaconda/latest'
+module: anaconda: This module will be updated without notice, as it is a symbolic to the latest anaconda module. See https://docs.ccv.brown.edu/oscar/software/anaconda for potential issues on VNC and batch jobs
+module: loading 'gcc/10.2'
+module: gcc: "Note: loading the gcc module overrides the gcc version on the system.  If you want to revert to the version of gcc provided by the OS, unload the gcc module."
+module: unloading 'python/2.7.12'
+module: loading 'python/3.9.0'
+begin test the accuracy
+--------------------------------------------------
+JAY & NICK ADDED THIS: MODEL = /cifs/data/tserre_lrs/projects/prj_video_imagenet/models_to_test/outs_finetune_e2D_d2D_pretrain_vitbase_patch16_224_IN_jump4_checkpoint-99.pth
+LOADING IN CUSTOM MODEL IN PREDICT.PY TEST_BASELINE()
+In test_baseline of predict.py, line 104
+acc: 0.0
+ATTACK SUSCEPTIBILITY OVERALL:  1.0
+no.100 the mean img
+--------------------------------------------------
+JAY & NICK ADDED THIS: MODEL = /cifs/data/tserre_lrs/projects/prj_video_imagenet/models_to_test/outs_finetune_e2D_d2D_pretrain_vitbase_patch16_224_IN_jump4_checkpoint-99.pth
+LOADING IN CUSTOM MODEL IN PREDICT.PY TEST_BASELINE()
+In test_baseline of predict.py, line 104
+acc: 0.0
+ATTACK SUSCEPTIBILITY MEAN IMG:  1.0
+
+
+
+
+
+
+
+
+
+
+[jgopal@gpu2004 testing_scripts]$ sh viewfool-attack-co3d-hotdog.sh
+module: loading 'anaconda/latest'
+module: anaconda: This module will be updated without notice, as it is a symbolic to the latest anaconda module. See https://docs.ccv.brown.edu/oscar/software/anaconda for potential issues on VNC and batch jobs
+module: loading 'gcc/10.2'
+module: gcc: "Note: loading the gcc module overrides the gcc version on the system.  If you want to revert to the version of gcc provided by the OS, unload the gcc module."
+module: unloading 'python/2.7.12'
+module: loading 'python/3.9.0'
+begin test the accuracy
+--------------------------------------------------
+JAY & NICK ADDED THIS: MODEL = /cifs/data/tserre_lrs/projects/prj_video_imagenet/models_to_test/outs_finetune_e2D_d2D_pretrain_vitbase_patch16_224_IN_jump4_checkpoint-99.pth
+LOADING IN CUSTOM MODEL IN PREDICT.PY TEST_BASELINE()
+In test_baseline of predict.py, line 104
+acc: 0.0
+ATTACK SUSCEPTIBILITY OVERALL:  1.0
+no.100 the mean img
+--------------------------------------------------
+JAY & NICK ADDED THIS: MODEL = /cifs/data/tserre_lrs/projects/prj_video_imagenet/models_to_test/outs_finetune_e2D_d2D_pretrain_vitbase_patch16_224_IN_jump4_checkpoint-99.pth
+LOADING IN CUSTOM MODEL IN PREDICT.PY TEST_BASELINE()
+In test_baseline of predict.py, line 104
+acc: 0.0
+ATTACK SUSCEPTIBILITY MEAN IMG:  1.0
+

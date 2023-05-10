@@ -85,13 +85,14 @@ def render_image(all_args, is_over=False):
         load_ckpt(nerf_fine, args.ckpt_path, model_name='nerf_fine')
         nerf_fine.cuda().eval()
         models['fine'] = nerf_fine       
-
+    
 
     imgs, depth_maps, psnrs = [], [], []
     
     insert1 = args.dataset_name 
-    insert2 = args.scene_name 
-    dir_name = "resultsMay5/" + insert1 + "/" + insert2
+    insert2 = args.scene_name
+    result_base = args.jay_result_base 
+    dir_name = result_base + insert1 + "/" + insert2
      
     os.makedirs(dir_name, exist_ok=True)
 

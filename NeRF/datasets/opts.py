@@ -17,6 +17,12 @@ def get_opts():
     parser.add_argument('--spheric_poses', default=False, action="store_true",
                         help='whether images are taken in spheric poses (for llff)')
 
+    parser.add_argument('--jay_model_path', default='/cifs/data/tserre_lrs/projects/prj_video_imagenet/models_to_test/outs_finetune_e2D_d2D_pretrain_vitbase_patch16_224_IN_jump4_checkpoint-99.pth',
+                        help='path to classifier weights')
+
+    parser.add_argument('--jay_result_base', default='/users/jgopal/Neurips2023/ViewFool_/resultsMay5/',
+                        help='path to save the 101 adversarial view images')
+
     parser.add_argument('--N_emb_xyz', type=int, default=10,
                         help='number of frequencies in xyz positional encoding')
     parser.add_argument('--N_emb_dir', type=int, default=4,

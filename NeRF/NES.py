@@ -504,7 +504,7 @@ def NES_search():
 
     print(f'final mu after tanh(mean) {mu}')
 
-    np.save('~/Neurips2023/ViewFool_/Jay_output/logging_test4_May3.npy', logging)
+    # np.save('/users/jgopal/Neurips2023/ViewFool_/Jay_output/logging_test4_May3.npy', logging)
 
     
     "Render 100 images of this distribution"
@@ -514,24 +514,27 @@ def NES_search():
 
     "Verify Accuracy"
 
-    #TODO: CHANGE THIS MODEL PATH
-    model_path_hardcoded = '/cifs/data/tserre_lrs/projects/prj_video_imagenet/models_to_test/outs_finetune_e2D_d2D_pretrain_vitbase_patch16_224_IN_jump4_checkpoint-99.pth'
+    model_path_hardcoded = args.jay_model_path
+    result_base = args.jay_result_base
 
     print('begin test the accuracy')
     print('--------------------------------------------------')
-    path = '~/Neurips2023/ViewFool_/results/' + args.dataset_name + '/' +  args.scene_name + '/' 
+    path = result_base + args.dataset_name + '/' +  args.scene_name + '/' 
     tmp = test_baseline(path=path, label=args.label_name, model=model_path_hardcoded)
     
+    print("ATTACK SUSCEPTIBILITY OVERALL: ", 1 - tmp)
+
     print('entropy')
     print('--------------------------------------------------')
     print(f"{solver.entropy}")
-
+    
 
     print('no.100 the mean img')
     print('--------------------------------------------------')
-    path = '~/Neurips2023/ViewFool_/results/' + args.dataset_name + '/' +  args.scene_name + '/' 
+    path = result_base + args.dataset_name + '/' +  args.scene_name + '/' 
     tmp2 = test_baseline(path=path, label=args.label_name, model=model_path_hardcoded, is_mean=True)
 
+    print("ATTACK SUSCEPTIBILITY MEAN IMG: ", 1 - tmp2)
 
     #x = render_image(best_solutions)
     #test_baseline(path="C:/Users/Silvester/PycharmProjects/NeRFAttack/NeRF/results/blender_for_attack/'hotdog'/",label='hotdog, hot dog, red hot')
@@ -670,12 +673,12 @@ def NES_search():
     "Verify Accuracy"
     print('begin test the accuracy')
     print('--------------------------------------------------')
-    path = '~/Neurips2023/ViewFool_/Jay_output/' + args.scene_name + '/'
+    path = '/users/jgopal/Neurips2023/ViewFool_/Jay_output/' + args.scene_name + '/'
     test_baseline(path=path, label=args.label_name, model='vit')
 
     print('no.100 the mean img')
     print('--------------------------------------------------')
-    path = '~/Neurips2023/ViewFool_/Jay_output/' + args.scene_name + '/'
+    path = '/users/jgopal/Neurips2023/ViewFool_/Jay_output/' + args.scene_name + '/'
     test_baseline(path=path, label=args.label_name, model='vit', is_mean=True)
 
     #x = render_image(best_solutions)
@@ -817,12 +820,12 @@ def NES_search():
     "Verify Accuracy"
     print('begin test the accuracy')
     print('--------------------------------------------------')
-    path = '~/Neurips2023/ViewFool_/Jay_output/' + args.scene_name + '/'
+    path = '/users/jgopal/Neurips2023/ViewFool_/Jay_output/' + args.scene_name + '/'
     test_baseline(path=path, label=args.label_name, model='vit')
 
     print('no.100 the mean img')
     print('--------------------------------------------------')
-    path = '~/Neurips2023/ViewFool_/Jay_output/' + args.scene_name + '/'
+    path = '/users/jgopal/Neurips2023/ViewFool_/Jay_output/' + args.scene_name + '/'
     test_baseline(path=path, label=args.label_name, model='vit', is_mean=True)
 
     #x = render_image(best_solutions)

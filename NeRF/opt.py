@@ -14,6 +14,7 @@ def get_opts():
     parser.add_argument('--spheric_poses', default=False, action="store_true",
                         help='whether images are taken in spheric poses (for llff)')
 
+
     parser.add_argument('--N_emb_xyz', type=int, default=10,
                         help='number of frequencies in xyz positional encoding')
     parser.add_argument('--N_emb_dir', type=int, default=4,

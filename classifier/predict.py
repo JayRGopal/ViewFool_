@@ -97,7 +97,7 @@ def test_baseline(path, label, model='resnet', is_mean=False):
 
     model.eval()
 
-    with open("~/Neurips2023/ViewFool_/classifier/imagenet_classes.txt") as f:
+    with open("/users/jgopal/Neurips2023/ViewFool_/classifier/imagenet_classes.txt") as f:
         classes = [line.strip() for line in f.readlines()]
 
 
@@ -145,4 +145,6 @@ def test_baseline(path, label, model='resnet', is_mean=False):
     
     acc = acc/len(tensor_data)
     print("acc:", acc)
+
+    return acc
         

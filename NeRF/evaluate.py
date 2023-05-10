@@ -94,7 +94,7 @@ def comput_fitness(solution):
 
     # PUTTING IN CUSTOM MODELS
     
-    model_path = '/cifs/data/tserre_lrs/projects/prj_video_imagenet/models_to_test/outs_finetune_e2D_d2D_pretrain_vitbase_patch16_224_IN_jump4_checkpoint-99.pth'
+    model_path = args.jay_model_path
     model_description = partial(models_vit.__dict__['vit_base_patch16'], num_classes=1000,
     drop_path_rate=0.1, global_pool=True)
     model = model_description()

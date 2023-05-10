@@ -16,5 +16,3 @@ Get repo
 run attack
 
     python NeRF/attack_randomsearch.py --dataset_name blender_for_attack --scene_name 'AP_random/apple_2' --img_wh 400 400 --N_importance 64 --ckpt_path './NeRF/ckpts/apple_2/epoch=29.ckpt' --num_sample 100 --optim_method random --search_num 6 --root_dir <insert path to nerf on oscar>
-
-* the default --root-dir is '/home/ubuntu/data/nerf_example_data/nerf_synthetic/lego', I'm not familiar with the structure of the NeRF dataset folder structure, but hopefully this info helps you determine what exactly to specify --root-dir as
